@@ -292,7 +292,7 @@ inline sensor_msgs::PointCloud2 SourceDriver::ToRosMsg(const LidarDecodedFrame<L
     ++iter_ring_;
     ++iter_timestamp_;   
   }
-  printf("frame:%d points:%u packet:%d start time:%lf end time:%lf\n",frame.frame_index, frame.points_num, frame.packet_num, frame.points[0].timestamp, frame.points[frame.points_num - 1].timestamp) ;
+//printf("frame:%d points:%u packet:%d start time:%lf end time:%lf\n",frame.frame_index, frame.points_num, frame.packet_num, frame.points[0].timestamp, frame.points[frame.points_num - 1].timestamp) ;
   // ros_msg.header.seq = s;
   int64_t sec = static_cast<int64_t>(frame.points[0].timestamp);  
   if (sec <= std::numeric_limits<int32_t>::max()) {
@@ -300,6 +300,7 @@ inline sensor_msgs::PointCloud2 SourceDriver::ToRosMsg(const LidarDecodedFrame<L
   } else {
     printf("ros1 does not support timestamps greater than 19 January 2038 03:14:07 (now %lf)\n", frame.points[0].timestamp);
   }
+  ros_msg.header.stamp = ros::Time::now();
   ros_msg.header.frame_id = frame_id_;
   return ros_msg;
 }
